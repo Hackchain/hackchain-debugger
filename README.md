@@ -1,4 +1,5 @@
 # Hackchain-debugger
+[![NPM version](https://badge.fury.io/js/hackchain-debugger.svg)](http://badge.fury.io/js/hackchain-debugger)
 
 A debugger CLI tool for [hackchain][0].
 
