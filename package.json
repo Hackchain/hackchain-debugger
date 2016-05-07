@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Debugger for hackchain",
   "main": "lib/debugger.js",
-  "bin": "hc-debug",
+  "bin": "bin/hc-debug",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
