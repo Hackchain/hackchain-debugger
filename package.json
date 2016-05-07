@@ -1,0 +1,34 @@
+{
+  "name": "hackchain-debugger",
+  "version": "1.0.0",
+  "description": "Debugger for hackchain",
+  "main": "lib/debugger.js",
+  "bin": "hc-debug",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hackchain/hackchain-debugger.git"
+  },
+  "keywords": [
+    "hackchain",
+    "blockchain",
+    "game",
+    "hack",
+    "debugger"
+  ],
+  "author": "Fedor Indutny <fedor@indutny.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Hackchain/hackchain-debugger/issues"
+  },
+  "homepage": "https://github.com/Hackchain/hackchain-debugger#readme",
+  "dependencies": {
+    "blessed": "^0.1.81",
+    "hackchain-core": "^1.0.5",
+    "js-yaml": "^3.6.0",
+    "obuf": "^1.1.1",
+    "yargs": "^4.7.0"
+  }
+}
