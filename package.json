@@ -28,7 +28,7 @@
   "homepage": "https://github.com/Hackchain/hackchain-debugger#readme",
   "dependencies": {
     "blessed": "^0.1.81",
-    "hackchain-core": "^1.0.5",
+    "hackchain-core": "^2.0.0",
     "js-yaml": "^3.6.0",
     "obuf": "^1.1.1",
     "yargs": "^4.7.0"
