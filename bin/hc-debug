@@ -4,18 +4,87 @@
 const hackchain = require('../');
 
 const assert = require('assert');
+const async = require('async');
 const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
 
 const yargs = require('yargs')
-    .usage('Usage: $0 prog.yaml')
-    .demand(1);
+    .usage('Usage: $0 prog.yaml\n' +
+          '        $0 --tx name.tx --input 0\n' +
+          '        $0 --tx hash --input 0')
+    .describe('tx', 'path to transaction yaml file')
+    .describe('input', 'number of input in the transaction')
+    .describe('server', 'server address')
+    .alias('i', 'input')
+    .alias('s', 'server')
+    .default('input', 0)
+    .default('server', 'https://api.hackcha.in/');
+
 const argv = yargs.argv;
 
-const text = fs.readFileSync(argv._[0]).toString();
-const data = yaml.safeLoad(text);
+function debug(title, data) {
+  const d = new hackchain.Debugger(title, data);
 
-const d = new hackchain.Debugger(path.basename(argv._[0]), data);
+  d.run();
+}
 
-d.run();
+if (!argv.tx) {
+  if (argv._.length < 1) {
+    yargs.showHelp();
+    process.exit(1);
+  }
+
+  const text = fs.readFileSync(argv._[0]).toString();
+  const data = yaml.safeLoad(text);
+  return debug(path.basename(argv._[0]), data);
+}
+
+const Client = require('hackchain-client').Client;
+
+const client = new Client(argv.server);
+
+const index = parseInt(argv.input, 10);
+
+async.waterfall([
+  (callback) => {
+    if (fs.existsSync(argv.tx)) {
+      const text = fs.readFileSync(argv.tx).toString();
+      const data = yaml.safeLoad(text);
+
+      client.parseTX(data, callback);
+    } else {
+      client.getTX(argv.tx, callback);
+    }
+  },
+  (tx, callback) => {
+    if (tx.inputs.length <= index) {
+      return callback(new Error(`Debugger: input ${index} not found in tx: ` +
+                                `"${tx.hash().toString('hex')}"`));
+    }
+
+    const input = tx.inputs[index];
+    client.getTX(input.hash.toString('hex'), (err, parent) => {
+      if (err)
+        return callback(err);
+
+      if (parent.outputs.length <= input.index) {
+        return callback(new Error(
+            `Debugger: output ${input.index} not found ` +
+            ` in tx: "${parent.hash().toString('hex')}"`));
+      }
+
+      callback(null, tx.hash(), parent.outputs[input.index], input);
+    });
+  },
+  (hash, output, input) => {
+    debug(hash.toString('hex').slice(0, 7), {
+      hash: hash.toString('hex'),
+      output: output.script.opcodes,
+      input: input.script.opcodes
+    });
+  }
+], (err) => {
+  if (err)
+    throw err;
+});

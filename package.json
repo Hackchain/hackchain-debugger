@@ -27,7 +27,9 @@
   },
   "homepage": "https://github.com/Hackchain/hackchain-debugger#readme",
   "dependencies": {
+    "async": "^2.0.0-rc.4",
     "blessed": "^0.1.81",
+    "hackchain-client": "^2.2.0",
     "hackchain-core": "^2.1.0",
     "js-yaml": "^3.6.0",
     "obuf": "^1.1.1",
