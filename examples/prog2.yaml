@@ -4,10 +4,14 @@ output:
   - nop
   - nop
   - nop
+  # this will be modified to `nop`
   - beq r0 r0 1
   - irq success
   - hlt
 input:
-  - movi r1, 0x1000
-  - sw r0, r1, 0x4
+  # load address of instruction
+  - movi r1, 0x1004
+  # [r1] = r0
+  # (0x0000 - is the opcode value of `nop`)
+  - sw r0, r1, 0
   - irq success
