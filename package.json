@@ -1,6 +1,6 @@
 {
   "name": "hackchain-debugger",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "Debugger for hackchain",
   "main": "lib/debugger.js",
   "bin": {
